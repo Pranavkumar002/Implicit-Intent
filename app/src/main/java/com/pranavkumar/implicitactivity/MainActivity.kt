@@ -1,0 +1,49 @@
+package com.pranavkumar.implicitactivity
+
+import android.content.Intent
+import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.pranavkumar.implicitactivity.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity() {
+    lateinit var binding : ActivityMainBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        supportActionBar?.hide()
+
+        binding.btnUrl.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse("https://www.opera.com"))
+            startActivity(intent)
+        }
+
+
+
+
+        binding.btnDial.setOnClickListener {
+            val phone = "+9417846155"
+            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+            startActivity(intent)
+
+        }
+
+        binding.btnEmail.setOnClickListener {
+            val emailIntent = Intent(Intent.ACTION_SEND)
+            emailIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            emailIntent.type = "vnd.android.cursor.item/email"
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("abc@xyz.com"))
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "My Email Subject")
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "My email content")
+            startActivity(Intent.createChooser(emailIntent, "Send mail using..."))
+        }
+        binding.btnMessages.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = Uri.parse("sms:9417846155")
+            startActivity(intent)
+        }
+
+    }
+}
